@@ -1,178 +1,254 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Speed City Values</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
-      color: #f5f5f5;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #1a1a1a;
-      padding: 1.5rem;
-      text-align: center;
-      border-bottom: 2px solid #00d4ff;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
-      color: #00d4ff;
-    }
-    .controls {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 1rem;
-    }
-    .controls input, .controls select {
-      padding: 0.5rem;
-      border-radius: 8px;
-      border: none;
-      font-size: 1rem;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      padding: 1rem;
-    }
-    .card {
-      background: #1a1a1a;
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-      transition: transform 0.2s;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-    }
-    .trail-name {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #00d4ff;
-    }
-    .value {
-      font-size: 1rem;
-      margin-top: 5px;
-    }
-    .rarity {
-      display: inline-block;
-      margin-top: 8px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: bold;
-    }
-    .legendary { background: #ff3d3d; }
-    .rare { background: #ff9f1a; }
-    .epic { background: #9f1aff; }
-    .common { background: #3dff7d; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speed City Values</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: #121212;
+    color: #ffffff;
+  }
+
+  header {
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(90deg,#ff3d3d,#00d4ff);
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 1rem;
+  }
+
+  .controls input, .controls select {
+    padding: 0.6rem 1rem;
+    border-radius: 12px;
+    border: none;
+    font-size: 1rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+    gap: 20px;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 1rem;
+    border-radius: 15px;
+    background: #1e1e1e;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+  }
+
+  .trail-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #00d4ff;
+    margin: 0;
+  }
+
+  .value {
+    margin: 5px 0;
+    color: #ccc;
+    font-weight: 500;
+  }
+
+  .rarity {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .godly { background: #ff3d3d; }
+  .mythic { background: #9f1aff; }
+  .epic { background: #ff9f1a; }
+  .rare { background: #3dff7d; }
+  .low { background: #aaaaaa; }
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>⚡ Speed City Value List ⚡</h1>
-  </header>
+<header>⚡ Speed City Value List ⚡</header>
 
-  <div class="controls">
-    <input type="text" id="search" placeholder="Search trails...">
-    <select id="sort">
-      <option value="default">Sort By</option>
-      <option value="valueDesc">Value (High → Low)</option>
-      <option value="valueAsc">Value (Low → High)</option>
-      <option value="name">Name (A → Z)</option>
-    </select>
+<div class="controls">
+  <input type="text" id="search" placeholder="Search trails...">
+  <select id="sort">
+    <option value="default">Sort By</option>
+    <option value="valueDesc">Value (High → Low)</option>
+    <option value="valueAsc">Value (Low → High)</option>
+    <option value="name">Name (A → Z)</option>
+  </select>
+</div>
+
+<div class="grid" id="trailGrid">
+
+  <div class="card" data-value="15" data-name="Deleted Trail">
+    <p class="trail-name">Deleted Trail</p>
+    <p class="value">Value: 15</p>
+    <span class="rarity godly">Godly</span>
   </div>
 
-  <div class="grid" id="trailGrid">
-    <!-- Example cards -->
-    <div class="card" data-value="15" data-name="Deleted Trail">
-      <div class="trail-name">Deleted Trail</div>
-      <div class="value">Value: 15</div>
-      <div class="rarity legendary">Legendary</div>
-    </div>
-    <div class="card" data-value="12" data-name="Catching Snowflakes">
-      <div class="trail-name">Catching Snowflakes</div>
-      <div class="value">Value: 12</div>
-      <div class="rarity epic">Epic</div>
-    </div>
-    <div class="card" data-value="10" data-name="Gift">
-      <div class="trail-name">Gift</div>
-      <div class="value">Value: 10</div>
-      <div class="rarity epic">Epic</div>
-    </div>
-    <div class="card" data-value="9.5" data-name="Fancy Snowman">
-      <div class="trail-name">Fancy Snowman</div>
-      <div class="value">Value: 9.5</div>
-      <div class="rarity epic">Epic</div>
-    </div>
-    <div class="card" data-value="8.5" data-name="Gingerbread Man">
-      <div class="trail-name">Gingerbread Man</div>
-      <div class="value">Value: 8.5</div>
-      <div class="rarity rare">Rare</div>
-    </div>
-    <div class="card" data-value="7.5" data-name="Bells">
-      <div class="trail-name">Bells</div>
-      <div class="value">Value: 7.5</div>
-      <div class="rarity rare">Rare</div>
-    </div>
-    <div class="card" data-value="7" data-name="Golden Shiny Teeth">
-      <div class="trail-name">Golden Shiny Teeth</div>
-      <div class="value">Value: 7.0</div>
-      <div class="rarity rare">Rare</div>
-    </div>
-    <div class="card" data-value="6.5" data-name="Snowflake">
-      <div class="trail-name">Snowflake</div>
-      <div class="value">Value: 6.5</div>
-      <div class="rarity common">Common</div>
-    </div>
-    <div class="card" data-value="5.5" data-name="Rainbow">
-      <div class="trail-name">Rainbow</div>
-      <div class="value">Value: 5.5</div>
-      <div class="rarity common">Common</div>
-    </div>
-    <!-- Add more cards here for other trails -->
+  <div class="card" data-value="12" data-name="Catching Snowflakes">
+    <p class="trail-name">Catching Snowflakes</p>
+    <p class="value">Value: 12</p>
+    <span class="rarity godly">Godly</span>
   </div>
 
-  <script>
-    const searchInput = document.getElementById("search");
-    const sortSelect = document.getElementById("sort");
-    const grid = document.getElementById("trailGrid");
+  <div class="card" data-value="10" data-name="Gift">
+    <p class="trail-name">Gift</p>
+    <p class="value">Value: 10</p>
+    <span class="rarity godly">Godly</span>
+  </div>
 
-    // Search
-    searchInput.addEventListener("keyup", () => {
-      const filter = searchInput.value.toLowerCase();
-      const cards = grid.querySelectorAll(".card");
+  <div class="card" data-value="9.5" data-name="Fancy Snowman">
+    <p class="trail-name">Fancy Snowman</p>
+    <p class="value">Value: 9.5</p>
+    <span class="rarity mythic">Mythic</span>
+  </div>
 
-      cards.forEach(card => {
-        const name = card.dataset.name.toLowerCase();
-        card.style.display = name.includes(filter) ? "block" : "none";
-      });
-    });
+  <div class="card" data-value="8.5" data-name="Gingerbread Man">
+    <p class="trail-name">Gingerbread Man</p>
+    <p class="value">Value: 8.5</p>
+    <span class="rarity mythic">Mythic</span>
+  </div>
 
-    // Sorting
-    sortSelect.addEventListener("change", () => {
-      let cards = Array.from(grid.querySelectorAll(".card"));
-      let value = sortSelect.value;
+  <div class="card" data-value="7.5" data-name="Bells">
+    <p class="trail-name">Bells</p>
+    <p class="value">Value: 7.5</p>
+    <span class="rarity mythic">Mythic</span>
+  </div>
 
-      if (value === "valueDesc") {
-        cards.sort((a, b) => b.dataset.value - a.dataset.value);
-      } else if (value === "valueAsc") {
-        cards.sort((a, b) => a.dataset.value - b.dataset.value);
-      } else if (value === "name") {
-        cards.sort((a, b) => a.dataset.name.localeCompare(b.dataset.name));
-      }
+  <div class="card" data-value="7" data-name="Golden Shiny Teeth">
+    <p class="trail-name">Golden Shiny Teeth</p>
+    <p class="value">Value: 7.0</p>
+    <span class="rarity mythic">Mythic</span>
+  </div>
 
-      cards.forEach(card => grid.appendChild(card));
-    });
-  </script>
+  <div class="card" data-value="6.5" data-name="Snowflake">
+    <p class="trail-name">Snowflake</p>
+    <p class="value">Value: 6.5</p>
+    <span class="rarity epic">Epic</span>
+  </div>
+
+  <div class="card" data-value="5.5" data-name="Rainbow">
+    <p class="trail-name">Rainbow</p>
+    <p class="value">Value: 5.5</p>
+    <span class="rarity epic">Epic</span>
+  </div>
+
+  <div class="card" data-value="5" data-name="Legendary Crate">
+    <p class="trail-name">Legendary Crate</p>
+    <p class="value">Value: 5.0</p>
+    <span class="rarity epic">Epic</span>
+  </div>
+
+  <div class="card" data-value="4.5" data-name="2020">
+    <p class="trail-name">2020</p>
+    <p class="value">Value: 4.5</p>
+    <span class="rarity epic">Epic</span>
+  </div>
+
+  <div class="card" data-value="4.5" data-name="Wreath">
+    <p class="trail-name">Wreath</p>
+    <p class="value">Value: 4.5</p>
+    <span class="rarity epic">Epic</span>
+  </div>
+
+  <div class="card" data-value="3" data-name="Palm Tree">
+    <p class="trail-name">Palm Tree</p>
+    <p class="value">Value: 3.0</p>
+    <span class="rarity rare">Rare</span>
+  </div>
+
+  <div class="card" data-value="2.5" data-name="Flame">
+    <p class="trail-name">Flame</p>
+    <p class="value">Value: 2.5</p>
+    <span class="rarity rare">Rare</span>
+  </div>
+
+  <div class="card" data-value="2" data-name="Frozen Pumpkin">
+    <p class="trail-name">Frozen Pumpkin</p>
+    <p class="value">Value: 2.0</p>
+    <span class="rarity low">Low</span>
+  </div>
+
+  <div class="card" data-value="2" data-name="Dark Pumpkin">
+    <p class="trail-name">Dark Pumpkin</p>
+    <p class="value">Value: 2.0</p>
+    <span class="rarity low">Low</span>
+  </div>
+
+  <div class="card" data-value="2" data-name="Unstable">
+    <p class="trail-name">Unstable</p>
+    <p class="value">Value: 2.0</p>
+    <span class="rarity low">Low</span>
+  </div>
+
+  <div class="card" data-value="0.5" data-name="UFO">
+    <p class="trail-name">UFO</p>
+    <p class="value">Value: 0.5</p>
+    <span class="rarity low">Low</span>
+  </div>
+
+</div>
+
+<script>
+const searchInput = document.getElementById("search");
+const sortSelect = document.getElementById("sort");
+const grid = document.getElementById("trailGrid");
+
+// Search
+searchInput.addEventListener("keyup", () => {
+  const filter = searchInput.value.toLowerCase();
+  const cards = grid.querySelectorAll(".card");
+  cards.forEach(card => {
+    const name = card.dataset.name.toLowerCase();
+    card.style.display = name.includes(filter) ? "flex" : "none";
+  });
+});
+
+// Sorting
+sortSelect.addEventListener("change", () => {
+  let cards = Array.from(grid.querySelectorAll(".card"));
+  let value = sortSelect.value;
+
+  if (value === "valueDesc") cards.sort((a,b) => b.dataset.value - a.dataset.value);
+  else if (value === "valueAsc") cards.sort((a,b) => a.dataset.value - b.dataset.value);
+  else if (value === "name") cards.sort((a,b) => a.dataset.name.localeCompare(b.dataset.name));
+
+  cards.forEach(card => grid.appendChild(card));
+});
+</script>
 
 </body>
 </html>
+
+
+
+
+
